@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Putul Apu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background: radial-gradient(circle at center, #000000, #1a1a1a);
+  color:white;
+  font-family:'Courier New', monospace;
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+}
+
+/* HEADER */
+header{
+  text-align:center;
+  padding:20px;
+  font-size:2em;
+  color:#ff4d6d;
+  text-shadow:0 0 20px #ffb3c6, 0 0 40px #ff4d6d;
+}
+
+/* MAIN LAYOUT */
+section{
+  min-height:calc(100vh - 120px);
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap:30px;
+  padding:20px;
+  align-items:center;
+}
+
+/* LEFT */
+.left{
+  display:flex;
+  justify-content:center;
+}
+
+/* CENTER */
+.center{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* RIGHT */
+.right{
+  max-width:600px;
+}
+
+/* SLIDER */
+.slideshow{
+  width:320px;
+  aspect-ratio:3 / 5;
+  overflow:hidden;
+  border-radius:25px;
+  position:relative;
+  box-shadow:0 0 30px #ff4d6d;
+}
+
+.slideshow img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 1.2s ease-in-out;
+}
+
+.slideshow img.active{
+  opacity:1;
+}
+
+/* PLAY BUTTON */
+.play-btn{
+  padding:15px 40px;
+  font-size:18px;
+  background:#ff4d6d;
+  color:white;
+  border:none;
+  border-radius:40px;
+  cursor:pointer;
+  box-shadow:0 0 25px #ff4d6d;
+  margin-right:85px;
+}
+.play-btn:hover{
+  background:#ff1f4b;
+}
+
+/* TEXT */
+.typing{
+  font-size:18px;
+  white-space:pre-line;
+  border-left:3px solid #ff4d6d;
+  padding-left:15px;
+}
+
+/* HEARTS */
+.heart{
+  position:fixed;
+  bottom:-10px;
+  color:#ffccd5;
+  animation:float linear infinite;
+}
+
+@keyframes float{
+  from{transform:translateY(0);}
+  to{transform:translateY(-120vh);}
+}
+
+audio{ display:none; }
+
+/* MOBILE */
+@media(max-width:900px){
+  section{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .typing{
+    border-left:none;
+    border-top:3px solid #ff4d6d;
+    padding-left:0;
+    padding-top:15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="bgMusic" preload="auto" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<header>
+  🎂 Happy Birthday Putul Apu 🎂
+</header>
+
+<section>
+
+  <div class="left">
+    <div class="slideshow">
+      <img src="img1.jpg" class="active">
+      <img src="img2.jpg">
+      <img src="img3.jpg">
+    </div>
+  </div>
+
+  <div class="center">
+    <button class="play-btn" id="musicBtn" onclick="toggleMusic()">▶ Play Music</button>
+  </div>
+
+  <div class="right">
+    <div class="typing" id="text"></div>
+  </div>
+
+</section>
+
+<script>
+// ===== MUSIC TOGGLE (FIXED) =====
+const music = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
+
+function toggleMusic(){
+  if(music.paused){
+    music.play();
+    btn.innerHTML = "⏸ Pause Music";
+  }else{
+    music.pause();
+    btn.innerHTML = "▶ Play Music";
+  }
+}
+
+// ===== TYPING =====
+const message = `
+Happy birthday to my dearest Putul Apu🤍
+No matter how many storms life brings,
+may your smile never fade away,
+and may tears never find their way
+down your beautiful eyes.
+
+You are not just my sister,
+you are my comfort, my strength,
+and one of the purest blessings in my life.
+May your days always be filled with peace,
+your heart with happiness,
+and your life with everything beautiful you deserve.
+
+Stay the way you are—
+kind, strong, and full of light. 🌸
+`;
+
+let i = 0;
+function typeText(){
+  if(i < message.length){
+    document.getElementById("text").innerHTML += message.charAt(i);
+    i++;
+    window.scrollTo({ top: document.body.scrollHeight, behavior:"smooth" });
+    setTimeout(typeText,40);
+  }
+}
+typeText();
+
+// ===== SLIDER =====
+const slides = document.querySelectorAll(".slideshow img");
+let current = 0;
+setInterval(()=>{
+  slides[current].classList.remove("active");
+  current = (current + 1) % slides.length;
+  slides[current].classList.add("active");
+},3000);
+
+// ===== HEARTS =====
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(15+Math.random()*25)+"px";
+  h.style.animationDuration=(4+Math.random()*4)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},400);
+</script>
+
+</body>
+</html>
